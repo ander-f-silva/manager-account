@@ -15,12 +15,13 @@ Por isso tive a iniciativa em desenhar a solução para ilustrar o meu pensament
 
 ### Modelagem da API
 
-https://github.com/ander-f-silva/manager-account/blob/main/model_api.jpg
+![API](/model_api.jpg)
+
 
 ### Modelagem do Banco de Dados
 
-https://github.com/ander-f-silva/manager-account/blob/main/model_db.jpg
+![Database](model_db.jpg)
 
 ### Arquitetura
 
-https://github.com/ander-f-silva/manager-account/blob/main/model_architecture.jpg
+![Database](model_architecture.jpg)
