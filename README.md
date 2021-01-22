@@ -20,8 +20,8 @@ Por isso tive a iniciativa em desenhar a solução para ilustrar o meu pensament
 
 ### Modelagem do Banco de Dados
 
-![Database](model_db.jpg)
+![Database](/model_db.jpg)
 
 ### Arquitetura
 
-![Database](model_architecture.jpg)
+![Architecture](/model_architecture.jpg)
