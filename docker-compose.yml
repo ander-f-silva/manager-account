@@ -1,0 +1,13 @@
+version: '3.7'
+services:
+  db-service:
+    image: "mysql:8.0"
+    restart: always
+    container_name: manager-account-db
+    environment:
+      MYSQL_DATABASE: manager-account-db
+      MYSQL_USER: manager-account
+      MYSQL_PASSWORD: manager-account
+      MYSQL_ROOT_PASSWORD: manager-account
+    ports:
+      - "3306:3306"
