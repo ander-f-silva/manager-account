@@ -9,4 +9,14 @@ datasources:
     password: ${MYSQL_PASSWORD}
     schema-generate: CREATE_DROP
     dialect: MYSQL
-jpa.default.properties.hibernate.hbm2ddl.auto: update
+jpa:
+  default:
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: none
+        show_sql: true
+flyway:
+  datasources:
+    default:
+      enabled: true
