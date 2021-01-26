@@ -1,4 +1,4 @@
-package br.com.db.mg;
+package br.com.dn.mg;
 
 import io.micronaut.runtime.Micronaut;
 import io.swagger.v3.oas.annotations.*;

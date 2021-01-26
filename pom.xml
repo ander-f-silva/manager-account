@@ -18,7 +18,7 @@
     <jdk.version>11</jdk.version>
     <release.version>11</release.version>
     <micronaut.version>2.3.0</micronaut.version>
-    <exec.mainClass>br.com.db.mg.Application</exec.mainClass>
+    <exec.mainClass>br.com.dn.mg.Application</exec.mainClass>
     <micronaut.openapi.version>2.2.2</micronaut.openapi.version>
     <micronaut.data.version>2.2.4</micronaut.data.version>
     <micronaut.runtime>netty</micronaut.runtime>
@@ -107,6 +107,11 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-params</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>io.micronaut.test</groupId>
       <artifactId>micronaut-test-junit5</artifactId>
       <scope>test</scope>
@@ -130,6 +135,11 @@
       <groupId>org.testcontainers</groupId>
       <artifactId>mysql</artifactId>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>br.com.caelum.stella</groupId>
+      <artifactId>caelum-stella-core</artifactId>
+      <version>2.1.2</version>
     </dependency>
   </dependencies>
 
