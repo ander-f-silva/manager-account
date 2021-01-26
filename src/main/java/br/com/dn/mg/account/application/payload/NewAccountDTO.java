@@ -5,16 +5,16 @@ import io.micronaut.core.annotation.Introspected;
 import javax.validation.constraints.NotBlank;
 
 @Introspected
-public class AccountRequest {
+public class NewAccountDTO {
     @NotBlank
     private String document;
     @NotBlank
     private String fullName;
 
-    public AccountRequest() {
+    public NewAccountDTO() {
     }
 
-    public AccountRequest(String document, String fullName) {
+    public NewAccountDTO(String document, String fullName) {
         this.document = document;
         this.fullName = fullName;
     }

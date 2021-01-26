@@ -1,6 +1,6 @@
 package br.com.dn.mg.account.application;
 
-import br.com.dn.mg.account.application.payload.AccountRequest;
+import br.com.dn.mg.account.application.payload.NewAccountDTO;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.client.HttpClient;
@@ -27,9 +27,11 @@ class AccountsResourceTest {
     @DisplayName("should register a new account ")
     @ParameterizedTest(name = "{index} with document ''{0}'' and fullName ''{1}''")
     @CsvSource({
-            "00000000000, Carlos Eduardo do Santos, 201, ",
+            "83769507037, Carlos Eduardo do Santos, 201",
+            "00000000000, Carlos Eduardo do Santos, 422",
+            "83769507037, Carlos Eduardo do Santos, 409",
             "'', Carlos Eduardo do Santos, 400",
-            "00000000000, '', 400"
+            "83769507037, '', 400"
     })
     void testRegisterAccount(ArgumentsAccessor arguments) {
         String document = arguments.get(0).toString();
@@ -37,7 +39,7 @@ class AccountsResourceTest {
         Integer statusCode =  Integer.valueOf(arguments.get(2).toString());
 
         try {
-            HttpResponse<?> response = client.toBlocking().exchange(HttpRequest.POST("/accounts",  new AccountRequest(document, fullName)), AccountRequest.class);
+            HttpResponse<?> response = client.toBlocking().exchange(HttpRequest.POST("/accounts",  new NewAccountDTO(document, fullName)), NewAccountDTO.class);
             assertEquals(statusCode, response.getStatus().getCode());
         } catch (HttpClientResponseException httpClientResponseException) {
             assertEquals(statusCode, httpClientResponseException.getStatus().getCode());

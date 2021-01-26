@@ -1,31 +1,28 @@
 package br.com.dn.mg.account.application;
 
-import br.com.dn.mg.account.application.payload.AccountRequest;
-import br.com.dn.mg.account.infrastructure.Account;
-import br.com.dn.mg.account.infrastructure.AccountRepository;
+import br.com.dn.mg.account.application.payload.NewAccountDTO;
+import br.com.dn.mg.account.domain.RegisteringNewAccount;
 import io.micronaut.http.HttpResponse;
-import io.micronaut.http.annotation.Body;
-import io.micronaut.http.annotation.Controller;
-import io.micronaut.http.annotation.Post;
+import io.micronaut.http.MediaType;
+import io.micronaut.http.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.HashMap;
 
 @Controller("/accounts")
 class AccountsResource {
 
-    AccountRepository repository;
+    RegisteringNewAccount registeringNewAccount;
 
-    public AccountsResource(AccountRepository repository) {
-        this.repository = repository;
+    public AccountsResource(RegisteringNewAccount registeringNewAccount) {
+        this.registeringNewAccount = registeringNewAccount;
     }
 
+    @Consumes(MediaType.APPLICATION_JSON)
     @Post
-    public HttpResponse<?> register(@Valid @Body AccountRequest accountRequest) {
-        var account = repository.save(new Account(accountRequest.getDocument(), accountRequest.getFullName()));
-        return HttpResponse
-                .created(URI.create("/accounts/" + account.getId()));
+    public HttpResponse<?> register(@Valid @Body NewAccountDTO newAccount) {
+        var id =  registeringNewAccount.effect(newAccount);
+        return HttpResponse.created(URI.create("/accounts/" + id.toString()));
     }
 
 }
