@@ -20,7 +20,7 @@ class AccountsResource {
 
     @Consumes(MediaType.APPLICATION_JSON)
     @Post
-    public HttpResponse<?> register(@Valid @Body NewAccountDTO newAccount) {
+    public HttpResponse<?> registerNewAccount(@Valid @Body NewAccountDTO newAccount) {
         var id =  registeringNewAccount.effect(newAccount);
         return HttpResponse.created(URI.create("/accounts/" + id.toString()));
     }
