@@ -1,0 +1,1 @@
+insert into account (id, document, full_name, amount, created_at) values (uuid(), '39670899087', 'Patricia Santos', 2000.00, now());

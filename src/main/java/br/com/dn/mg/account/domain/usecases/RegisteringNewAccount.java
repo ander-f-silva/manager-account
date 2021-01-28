@@ -1,9 +1,9 @@
-package br.com.dn.mg.account.domain;
+package br.com.dn.mg.account.domain.usecases;
 
 
 import br.com.dn.mg.account.application.payload.NewAccountDTO;
-import br.com.dn.mg.account.domain.errors.AccountAlreadyRegisteredException;
-import br.com.dn.mg.account.domain.errors.InvalidDocumentException;
+import br.com.dn.mg.account.domain.usecases.errors.AccountAlreadyRegisteredException;
+import br.com.dn.mg.account.domain.usecases.errors.InvalidDocumentException;
 
 import java.util.UUID;
 

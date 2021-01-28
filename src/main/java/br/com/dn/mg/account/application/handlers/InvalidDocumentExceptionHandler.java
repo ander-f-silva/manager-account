@@ -1,6 +1,6 @@
 package br.com.dn.mg.account.application.handlers;
 
-import br.com.dn.mg.account.domain.errors.InvalidDocumentException;
+import br.com.dn.mg.account.domain.usecases.errors.InvalidDocumentException;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;

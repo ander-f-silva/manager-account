@@ -1,5 +1,5 @@
 create table account (
-    id binary(16) primary key,
+    id varchar(36) primary key,
     document varchar(11) not null,
     full_name varchar(80) not null,
     amount double not null,
