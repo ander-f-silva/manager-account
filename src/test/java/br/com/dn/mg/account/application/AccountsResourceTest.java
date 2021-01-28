@@ -2,7 +2,6 @@ package br.com.dn.mg.account.application;
 
 import br.com.dn.mg.account.application.payload.DepositAccountDTO;
 import br.com.dn.mg.account.application.payload.NewAccountDTO;
-import br.com.dn.mg.account.infrastructure.AccountEntity;
 import br.com.dn.mg.account.infrastructure.AccountRepository;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
@@ -56,10 +55,10 @@ class AccountsResourceTest {
     @DisplayName("should deposit the value a account existing. cases: ")
     @ParameterizedTest(name = "{0}")
     @CsvSource({
-            "deposit with success, 20000, true, 204",
-//            "not deposit with negative value, -10000, true, 400",
-//            "not deposit value more 2000, 2001, true, 400",
-//            "account not found, 20000, false, 404",
+            "deposit with success, 2000, true, 204",
+            "not deposit with negative value, -10000, true, 400",
+            "not deposit value more 2000, 2001, true, 400",
+            "account not found, 2000, false, 404",
     })
     void testDepositInAccount(ArgumentsAccessor arguments) {
         Double amount = Double.valueOf(arguments.get(1).toString());
