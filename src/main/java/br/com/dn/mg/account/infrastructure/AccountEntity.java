@@ -10,8 +10,8 @@ import javax.persistence.Id;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Entity
-public class Account {
+@Entity(name = "account")
+public class AccountEntity {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(
@@ -32,10 +32,10 @@ public class Account {
     @Column(name = "created_At")
     private LocalDateTime createdAt;
 
-    public Account() {
+    public AccountEntity() {
     }
 
-    public Account(String document, String fullName) {
+    public AccountEntity(String document, String fullName) {
         this.document = document;
         this.fullName = fullName;
         this.amount = 0.0;
@@ -55,6 +55,10 @@ public class Account {
 
     public Double getAmount() {
         return amount;
+    }
+
+    public void setAmount(Double amount) {
+        this.amount = amount;
     }
 
     public LocalDateTime getCreatedAt() {

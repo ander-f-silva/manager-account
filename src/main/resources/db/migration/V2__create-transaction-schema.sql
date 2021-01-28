@@ -1,6 +1,6 @@
 create table transaction (
-    id binary(16) primary key,
-    account_id binary(16) not null,
+    id varchar(36) primary key,
+    account_id varchar(36) not null,
     operation enum('TRANSFER','DEPOSIT') not null,
     value double not null,
     created_at datetime
