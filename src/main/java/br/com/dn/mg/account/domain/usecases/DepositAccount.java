@@ -3,6 +3,9 @@ package br.com.dn.mg.account.domain.usecases;
 import br.com.dn.mg.account.application.payload.DepositAccountDTO;
 import br.com.dn.mg.account.domain.usecases.errors.AccountNotFoundException;
 import br.com.dn.mg.account.infrastructure.AccountRepository;
+import br.com.dn.mg.account.infrastructure.TransactionEntity;
+import br.com.dn.mg.account.infrastructure.TransactionRepository;
+import br.com.dn.mg.account.infrastructure.TransactionType;
 
 import javax.inject.Singleton;
 import javax.transaction.Transactional;
@@ -12,8 +15,11 @@ import java.util.UUID;
 class DepositAccount implements DepositingAccount {
     private AccountRepository accountRepository;
 
-    public DepositAccount(AccountRepository accountRepository) {
+    private TransactionRepository transactionRepository;
+
+    public DepositAccount(AccountRepository accountRepository, TransactionRepository transactionRepository) {
         this.accountRepository = accountRepository;
+        this.transactionRepository = transactionRepository;
     }
 
     @Transactional(value = Transactional.TxType.REQUIRES_NEW)
@@ -34,8 +40,9 @@ class DepositAccount implements DepositingAccount {
         var account =  new Account(document, fullName, amount);
         var total = account.sumAmount(depositAccount.getValue());
 
-        accountDeposited.setAmount(total);
+        transactionRepository.save(new TransactionEntity(accountDeposited, TransactionType.DEPOSIT, depositAccount.getValue()));
 
+        accountDeposited.setAmount(total);
         accountRepository.save(accountDeposited);
     }
 }
