@@ -2,6 +2,7 @@ package br.com.dn.mg.account.infrastructure;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,6 +19,7 @@ public class AccountEntity {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
+    @Type(type="org.hibernate.type.UUIDCharType")
     private UUID id;
 
     private String document ;
