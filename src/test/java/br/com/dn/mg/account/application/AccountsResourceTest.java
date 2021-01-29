@@ -1,7 +1,9 @@
 package br.com.dn.mg.account.application;
 
+import br.com.dn.mg.account.application.payload.AccountDTO;
 import br.com.dn.mg.account.application.payload.DepositAccountDTO;
 import br.com.dn.mg.account.application.payload.NewAccountDTO;
+import br.com.dn.mg.account.infrastructure.AccountEntity;
 import br.com.dn.mg.account.infrastructure.AccountRepository;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
@@ -75,6 +77,40 @@ class AccountsResourceTest {
 
             HttpResponse<?> response = client.toBlocking().exchange(HttpRequest.PATCH("/accounts/" + accountId.toString() + "/deposit",  new DepositAccountDTO(amount)), NewAccountDTO.class);
             assertEquals(statusCode, response.getStatus().getCode());
+        } catch (HttpClientResponseException httpClientResponseException) {
+            assertEquals(statusCode, httpClientResponseException.getStatus().getCode());
+        }
+    }
+
+    @DisplayName("should get the account registered. cases: ")
+    @ParameterizedTest(name = "{0}")
+    @CsvSource({
+            "return the account registered, true, 200",
+            "return 404 to account not found, false, 404",
+    })
+    void testGetAccount(ArgumentsAccessor arguments) {
+        Boolean accountExist =  Boolean.valueOf(arguments.get(1).toString());
+        Integer statusCode =  Integer.valueOf(arguments.get(2).toString());
+
+        try {
+            UUID accountId = UUID.randomUUID();
+
+            AccountEntity account = new AccountEntity();
+            if (accountExist) {
+                var  optAccount = accountRepository.findByDocument("39670899087");
+                account = optAccount.get();
+                accountId = account.getId();
+            }
+
+            HttpResponse<?> response = client.toBlocking().exchange(HttpRequest.GET("/accounts/" + accountId.toString()), AccountDTO.class);
+            assertEquals(statusCode, response.getStatus().getCode());
+
+            var accountResponse = response.getBody(AccountDTO.class).get();
+
+            assertEquals(account.getFullName(), accountResponse.getFullName());
+            assertEquals(account.getDocument(), accountResponse.getDocument());
+            assertEquals(account.getAmount(), accountResponse.getBalanceAmount());
+
         } catch (HttpClientResponseException httpClientResponseException) {
             assertEquals(statusCode, httpClientResponseException.getStatus().getCode());
         }
