@@ -10,5 +10,4 @@ public interface GettingAccount {
     AccountDTO find(UUID id) throws AccountNotFoundException;
 
     AccountDTO findWithTransactions(UUID id) throws AccountNotFoundException;
-
 }
