@@ -4,11 +4,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity(name = "account")
@@ -33,6 +31,10 @@ public class AccountEntity {
     @CreationTimestamp
     @Column(name = "created_At")
     private LocalDateTime createdAt;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_id")
+    private Set<TransactionEntity> transactions;
 
     public AccountEntity() {
     }
@@ -65,6 +67,10 @@ public class AccountEntity {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public Set<TransactionEntity> getTransactions() {
+        return transactions;
     }
 
     @Override
