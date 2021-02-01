@@ -1,17 +1,30 @@
 package br.com.dn.mg.account.application.payload;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.micronaut.core.annotation.Introspected;
+
+import java.util.Set;
 
 @Introspected
 public class AccountDTO {
     private String document;
     private String fullName;
+
+    @JsonIgnore
     private Double balanceAmount;
+    @JsonIgnore
+    private Set<TransactionDTO> transactions;
 
     public AccountDTO(String document, String fullName, Double balanceAmount) {
         this.document = document;
         this.fullName = fullName;
         this.balanceAmount = balanceAmount;
+    }
+
+    public AccountDTO(String document, String fullName, Set<TransactionDTO> transactions) {
+        this.document = document;
+        this.fullName = fullName;
+        this.transactions = transactions;
     }
 
     public String getDocument() {
@@ -32,6 +45,7 @@ public class AccountDTO {
                 "document='" + document + '\'' +
                 ", fullName='" + fullName + '\'' +
                 ", balanceAmount=" + balanceAmount +
+                ", transactions=" + transactions +
                 '}';
     }
 }
