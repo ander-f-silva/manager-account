@@ -6,7 +6,6 @@ import io.micronaut.data.annotation.Repository;
 import io.micronaut.data.repository.CrudRepository;
 
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 
 @Repository
@@ -19,5 +18,5 @@ public interface AccountRepository extends CrudRepository<AccountEntity, UUID> {
 
     @Executable
     @Join(value = "transactions", type = Join.Type.RIGHT)
-    Set<AccountEntity> findByAccountWithTransactions(UUID id);
+    Optional<AccountEntity> findByAccountWithTransactions(UUID id);
 }
