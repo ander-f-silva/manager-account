@@ -18,5 +18,5 @@ public interface AccountRepository extends CrudRepository<AccountEntity, UUID> {
 
     @Executable
     @Join(value = "transactions", type = Join.Type.RIGHT)
-    Optional<AccountEntity> findByAccountWithTransactions(UUID id);
+    Optional<AccountEntity> search(UUID id);
 }
