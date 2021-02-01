@@ -115,4 +115,41 @@ class AccountsResourceTest {
             assertEquals(statusCode, httpClientResponseException.getStatus().getCode());
         }
     }
+
+    @DisplayName("should get the transactions registered. cases: ")
+    @ParameterizedTest(name = "{0}")
+    @CsvSource({
+            "return the transactions registered, true, 200",
+            "return 404 to account not found, false, 404",
+    })
+    void testGetTransaction(ArgumentsAccessor arguments) {
+        Boolean accountExist =  Boolean.valueOf(arguments.get(1).toString());
+        Integer statusCode =  Integer.valueOf(arguments.get(2).toString());
+
+        try {
+            UUID accountId = UUID.randomUUID();
+
+            AccountEntity account = new AccountEntity();
+            if (accountExist) {
+                var  optAccount = accountRepository.findByDocument("39670899087");
+                account = optAccount.get();
+                accountId = account.getId();
+            }
+
+            HttpResponse<?> response = client.toBlocking().exchange(HttpRequest.GET("/accounts/" + accountId.toString()), AccountDTO.class);
+            assertEquals(statusCode, response.getStatus().getCode());
+
+            var accountResponse = response.getBody(AccountDTO.class).get();
+
+            assertEquals(account.getFullName(), accountResponse.getFullName());
+            assertEquals(account.getDocument(), accountResponse.getDocument());
+            assertEquals(account.getAmount(), accountResponse.getBalanceAmount());
+            assertEquals(1, 20); //TODO: Return the new total transactions
+            assertEquals(1, 20); //TODO: Return the data of transaction
+
+
+        } catch (HttpClientResponseException httpClientResponseException) {
+            assertEquals(statusCode, httpClientResponseException.getStatus().getCode());
+        }
+    }
 }
