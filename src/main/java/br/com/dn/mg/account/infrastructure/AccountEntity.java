@@ -2,6 +2,7 @@ package br.com.dn.mg.account.infrastructure;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Proxy;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -24,7 +25,6 @@ public class AccountEntity {
 
     @Column(name = "full_name")
     private String fullName;
-
 
     private Double amount;
 
