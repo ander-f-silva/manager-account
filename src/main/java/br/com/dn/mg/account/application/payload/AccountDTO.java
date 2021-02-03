@@ -1,6 +1,7 @@
 package br.com.dn.mg.account.application.payload;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.micronaut.core.annotation.Introspected;
 
 import java.util.Set;
@@ -10,9 +11,9 @@ public class AccountDTO {
     private String document;
     private String fullName;
 
-    @JsonIgnore
+    @JsonIgnoreProperties
     private Double balanceAmount;
-    @JsonIgnore
+    @JsonIgnoreProperties
     private Set<TransactionDTO> transactions;
 
     public AccountDTO(String document, String fullName, Double balanceAmount) {
@@ -37,6 +38,10 @@ public class AccountDTO {
 
     public Double getBalanceAmount() {
         return balanceAmount;
+    }
+
+    public Set<TransactionDTO> getTransactions() {
+        return transactions;
     }
 
     @Override
