@@ -20,7 +20,7 @@ public class TransactionEntity {
     @Type(type="org.hibernate.type.UUIDCharType")
     private UUID id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id")
     private AccountEntity accountEntity;
 

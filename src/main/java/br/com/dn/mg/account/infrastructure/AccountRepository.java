@@ -1,7 +1,8 @@
 package br.com.dn.mg.account.infrastructure;
 
-
 import io.micronaut.context.annotation.Executable;
+import io.micronaut.data.annotation.Join;
+import io.micronaut.data.annotation.Query;
 import io.micronaut.data.annotation.Repository;
 import io.micronaut.data.repository.CrudRepository;
 
@@ -15,4 +16,8 @@ public interface AccountRepository extends CrudRepository<AccountEntity, UUID> {
 
     @Executable
     Optional<AccountEntity> findByDocument(String document);
+
+    @Executable
+    @Query("select a from account a join fetch a.transactions t where a.id = :id ")
+    Optional<AccountEntity> search(UUID id);
 }

@@ -21,7 +21,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @MicronautTest
 class AccountsResourceTest {
@@ -110,6 +110,39 @@ class AccountsResourceTest {
             assertEquals(account.getFullName(), accountResponse.getFullName());
             assertEquals(account.getDocument(), accountResponse.getDocument());
             assertEquals(account.getAmount(), accountResponse.getBalanceAmount());
+
+        } catch (HttpClientResponseException httpClientResponseException) {
+            assertEquals(statusCode, httpClientResponseException.getStatus().getCode());
+        }
+    }
+
+    @DisplayName("should get the transactions registered. cases: ")
+    @ParameterizedTest(name = "{0}")
+    @CsvSource({
+            "return the transactions registered, true, 200",
+            "return 404 to account not found, false, 404",
+    })
+    void testGetAccountWithTransaction(ArgumentsAccessor arguments) {
+        Boolean accountExist =  Boolean.valueOf(arguments.get(1).toString());
+        Integer statusCode =  Integer.valueOf(arguments.get(2).toString());
+
+        try {
+            UUID accountId = UUID.randomUUID();
+
+            AccountEntity account = new AccountEntity();
+            if (accountExist) {
+                var  optAccount = accountRepository.findByDocument("39670899087");
+                account = optAccount.get();
+                accountId = account.getId();
+            }
+
+            HttpResponse<?> response = client.toBlocking().exchange(HttpRequest.GET("/accounts/" + accountId.toString()), AccountDTO.class);
+            assertEquals(statusCode, response.getStatus().getCode());
+
+            var accountResponse = response.getBody(AccountDTO.class).get();
+
+            assertEquals(account.getFullName(), accountResponse.getFullName());
+            assertEquals(account.getDocument(), accountResponse.getDocument());
 
         } catch (HttpClientResponseException httpClientResponseException) {
             assertEquals(statusCode, httpClientResponseException.getStatus().getCode());

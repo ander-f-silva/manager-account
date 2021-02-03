@@ -1,1 +1,2 @@
-insert into account (id, document, full_name, amount, created_at) values (uuid(), '39670899087', 'Patricia Santos', 2000.00, now());
+insert into account (id, document, full_name, amount, created_at) values ('4c6e76dc-64e6-11eb-ae93-0242ac130002', '39670899087', 'Patricia Santos', 0.00, now());
+insert into transaction (id, account_id, operation, value, created_at) values ('d17e21ba-64e6-11eb-ae93-0242ac130002', '4c6e76dc-64e6-11eb-ae93-0242ac130002', 'DEPOSIT', 2000.00, now());

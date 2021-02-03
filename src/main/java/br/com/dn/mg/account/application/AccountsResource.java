@@ -39,4 +39,10 @@ class AccountsResource {
     public HttpResponse<?> getAccount(@PathVariable("id") UUID id) {
         return HttpResponse.ok(gettingAccount.find(id));
     }
+
+    @Produces(MediaType.APPLICATION_JSON)
+    @Get("/{id}/transactions")
+    public HttpResponse<?> getAccountWithTransactions(@PathVariable("id") UUID id) {
+        return HttpResponse.ok(gettingAccount.findWithTransactions(id));
+    }
 }
