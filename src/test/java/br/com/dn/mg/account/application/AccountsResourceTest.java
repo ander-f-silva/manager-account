@@ -3,6 +3,7 @@ package br.com.dn.mg.account.application;
 import br.com.dn.mg.account.application.payload.AccountDTO;
 import br.com.dn.mg.account.application.payload.DepositAccountDTO;
 import br.com.dn.mg.account.application.payload.NewAccountDTO;
+import br.com.dn.mg.account.application.payload.TransferAccountDTO;
 import br.com.dn.mg.account.infrastructure.AccountEntity;
 import br.com.dn.mg.account.infrastructure.AccountRepository;
 import io.micronaut.http.HttpRequest;
@@ -149,7 +150,7 @@ class AccountsResourceTest {
         }
     }
 
-    @DisplayName("should perform transfer entry accoutn. cases: ")
+    @DisplayName("should perform transfer entry account. cases: ")
     @ParameterizedTest(name = "{0}")
     @CsvSource({
             "return the transfer perform with success, true, 2000, 200",
@@ -181,7 +182,7 @@ class AccountsResourceTest {
                 fromAccountId = fromAccount.getId();
             }
 
-            HttpResponse<?> response = client.toBlocking().exchange(HttpRequest.PATCH("/accounts/" + toAccount.toString() + "/transfer",  new DepositAccountDTO(value)), NewAccountDTO.class);
+            HttpResponse<?> response = client.toBlocking().exchange(HttpRequest.PATCH("/accounts/" + toAccount.toString() + "/transfer",  new TransferAccountDTO(fromAccountId, value)), TransferAccountDTO.class);
             assertEquals(statusCode, response.getStatus().getCode());
         } catch (HttpClientResponseException httpClientResponseException) {
             assertEquals(statusCode, httpClientResponseException.getStatus().getCode());
