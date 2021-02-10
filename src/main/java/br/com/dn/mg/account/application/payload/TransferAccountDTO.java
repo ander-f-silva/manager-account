@@ -1,5 +1,9 @@
 package br.com.dn.mg.account.application.payload;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.deser.std.UUIDDeserializer;
+import com.fasterxml.jackson.databind.ser.std.UUIDSerializer;
 import io.micronaut.core.annotation.Introspected;
 
 import javax.validation.constraints.DecimalMax;
@@ -11,6 +15,8 @@ import java.util.UUID;
 @Introspected
 public class TransferAccountDTO {
     @NotNull
+    @JsonSerialize(contentUsing= UUIDSerializer.class)
+    @JsonDeserialize(contentUsing= UUIDDeserializer.class)
     private UUID accountFrom;
 
     @Positive
@@ -19,7 +25,7 @@ public class TransferAccountDTO {
     public TransferAccountDTO() {
     }
 
-    public TransferAccountDTO(@NotNull UUID accountFrom, @Positive Double value) {
+    public TransferAccountDTO(UUID accountFrom, Double value) {
         this.accountFrom = accountFrom;
         this.value = value;
     }
@@ -35,7 +41,7 @@ public class TransferAccountDTO {
     @Override
     public String toString() {
         return "TransferAccountDTO{" +
-                "accountFrom=" + accountFrom +
+                "accountFrom=" + accountFrom.toString() +
                 ", value=" + value +
                 '}';
     }
