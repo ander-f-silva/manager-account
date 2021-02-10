@@ -75,7 +75,7 @@ class AccountsResourceTest {
                 accountId = account.get().getId();
             }
 
-            HttpResponse<?> response = client.toBlocking().exchange(HttpRequest.PATCH("/accounts/" + accountId.toString() + "/deposit",  new DepositAccountDTO(amount)), NewAccountDTO.class);
+            HttpResponse<?> response = client.toBlocking().exchange(HttpRequest.PATCH("/accounts/" + accountId.toString() + "/deposit",  new DepositAccountDTO(amount)), DepositAccountDTO.class);
             assertEquals(statusCode, response.getStatus().getCode());
         } catch (HttpClientResponseException httpClientResponseException) {
             assertEquals(statusCode, httpClientResponseException.getStatus().getCode());
