@@ -32,7 +32,7 @@ class DepositAccount implements DepositingAccount {
         var amount = accountDeposited.getAmount();
 
         var account =  new Account(document, fullName, amount);
-        var total = account.sumAmount(depositAccount.getValue());
+        var total = account.deposit(depositAccount.getValue());
 
         transactionRepository.save(new TransactionEntity(accountDeposited, TransactionType.DEPOSIT, depositAccount.getValue()));
 

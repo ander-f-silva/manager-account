@@ -17,7 +17,7 @@ class Account {
         this.amount = amount;
     }
 
-    public Double sumAmount(Double value ) {
+    public Double deposit(Double value ) {
        return amount + value;
     }
 }
