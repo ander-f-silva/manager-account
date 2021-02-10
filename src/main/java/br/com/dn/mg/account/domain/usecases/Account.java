@@ -7,6 +7,10 @@ class Account {
 
     private Double amount;
 
+    public Account(Double amount) {
+        this.amount = amount;
+    }
+
     public Account(String document, String fullName, Double amount) {
         this.document = document;
         this.fullName = fullName;
