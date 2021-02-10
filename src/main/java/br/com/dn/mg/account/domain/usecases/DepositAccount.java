@@ -13,9 +13,9 @@ import java.util.UUID;
 
 @Singleton
 class DepositAccount implements DepositingAccount {
-    private AccountRepository accountRepository;
+    private final AccountRepository accountRepository;
 
-    private TransactionRepository transactionRepository;
+    private final TransactionRepository transactionRepository;
 
     public DepositAccount(AccountRepository accountRepository, TransactionRepository transactionRepository) {
         this.accountRepository = accountRepository;
@@ -25,13 +25,7 @@ class DepositAccount implements DepositingAccount {
     @Transactional(value = Transactional.TxType.REQUIRES_NEW)
     @Override
     public void effect(UUID id, DepositAccountDTO depositAccount) {
-        var optAccountDeposited = accountRepository.findById(id);
-
-        if (!optAccountDeposited.isPresent()) {
-            throw new AccountNotFoundException();
-        }
-
-        var accountDeposited = optAccountDeposited.get();
+        var accountDeposited = accountRepository.findById(id).orElseThrow(() -> new AccountNotFoundException());
 
         var document = accountDeposited.getDocument();
         var fullName = accountDeposited.getFullName();

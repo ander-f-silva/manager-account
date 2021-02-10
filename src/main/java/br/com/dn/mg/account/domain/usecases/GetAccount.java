@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 @Singleton
 class GetAccount implements GettingAccount {
-  private AccountRepository accountRepository;
+  private final AccountRepository accountRepository;
 
   public GetAccount(AccountRepository accountRepository) {
     this.accountRepository = accountRepository;
