@@ -1,6 +1,5 @@
 package br.com.dn.mg.account.application.handlers;
 
-import br.com.dn.mg.account.domain.usecases.errors.AccountAlreadyRegisteredException;
 import br.com.dn.mg.account.domain.usecases.errors.AccountNotFoundException;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.http.HttpRequest;
@@ -13,9 +12,10 @@ import javax.inject.Singleton;
 @Produces
 @Singleton
 @Requires(classes = {AccountNotFoundException.class, ExceptionHandler.class})
-public class AccountNotFoundExceptionHandler implements ExceptionHandler<AccountNotFoundException, HttpResponse> {
-    @Override
-    public HttpResponse handle(HttpRequest request, AccountNotFoundException exception) {
-        return HttpResponse.notFound();
-    }
+public class AccountNotFoundExceptionHandler
+    implements ExceptionHandler<AccountNotFoundException, HttpResponse> {
+  @Override
+  public HttpResponse handle(HttpRequest request, AccountNotFoundException exception) {
+    return HttpResponse.notFound();
+  }
 }

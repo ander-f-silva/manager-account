@@ -13,9 +13,10 @@ import javax.inject.Singleton;
 @Produces
 @Singleton
 @Requires(classes = {AccountAlreadyRegisteredException.class, ExceptionHandler.class})
-public class AccountAlreadyRegisteredExceptionHandler  implements ExceptionHandler<AccountAlreadyRegisteredException, HttpResponse> {
-    @Override
-    public HttpResponse handle(HttpRequest request, AccountAlreadyRegisteredException exception) {
-        return HttpResponse.status(HttpStatus.CONFLICT);
-    }
+public class AccountAlreadyRegisteredExceptionHandler
+    implements ExceptionHandler<AccountAlreadyRegisteredException, HttpResponse> {
+  @Override
+  public HttpResponse handle(HttpRequest request, AccountAlreadyRegisteredException exception) {
+    return HttpResponse.status(HttpStatus.CONFLICT);
+  }
 }

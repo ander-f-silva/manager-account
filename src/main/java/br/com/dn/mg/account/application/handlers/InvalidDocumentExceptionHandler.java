@@ -13,10 +13,11 @@ import javax.inject.Singleton;
 @Produces
 @Singleton
 @Requires(classes = {InvalidDocumentException.class, ExceptionHandler.class})
-public class InvalidDocumentExceptionHandler implements ExceptionHandler<InvalidDocumentException, HttpResponse> {
+public class InvalidDocumentExceptionHandler
+    implements ExceptionHandler<InvalidDocumentException, HttpResponse> {
 
-    @Override
-    public HttpResponse handle(HttpRequest request, InvalidDocumentException exception) {
-        return HttpResponse.status(HttpStatus.UNPROCESSABLE_ENTITY);
-    }
+  @Override
+  public HttpResponse handle(HttpRequest request, InvalidDocumentException exception) {
+    return HttpResponse.status(HttpStatus.UNPROCESSABLE_ENTITY);
+  }
 }

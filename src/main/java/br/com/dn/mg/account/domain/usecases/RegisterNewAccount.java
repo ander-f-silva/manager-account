@@ -10,33 +10,36 @@ import br.com.dn.mg.account.infrastructure.AccountRepository;
 
 import javax.inject.Singleton;
 import javax.transaction.Transactional;
+import java.util.Base64;
 import java.util.UUID;
 
 @Singleton
 class RegisterNewAccount implements RegisteringNewAccount {
-    private AccountRepository repository;
+  private AccountRepository repository;
 
-    public RegisterNewAccount(AccountRepository repository) {
-        this.repository = repository;
+  public RegisterNewAccount(AccountRepository repository) {
+    this.repository = repository;
+  }
+
+  @Transactional
+  @Override
+  public UUID effect(NewAccountDTO newAccount) {
+    CPFValidator validator = new CPFValidator();
+
+    try {
+      validator.assertValid(newAccount.getDocument());
+    } catch (InvalidStateException e) {
+      throw new InvalidDocumentException();
     }
 
-    @Transactional
-    @Override
-    public UUID effect(NewAccountDTO newAccount) {
-        CPFValidator validator = new CPFValidator();
-
-        try {
-            validator.assertValid(newAccount.getDocument());
-        } catch (InvalidStateException e) {
-           throw new InvalidDocumentException();
-        }
-
-        var hasRegisteredAccount = repository.existsByDocument(newAccount.getDocument());
-        if (hasRegisteredAccount) {
-           throw new AccountAlreadyRegisteredException();
-        }
-
-        var account = repository.save(new AccountEntity(newAccount.getDocument(), newAccount.getFullName()));
-        return account.getId();
+    var hasRegisteredAccount = repository.existsByDocument(newAccount.getDocument());
+    if (hasRegisteredAccount) {
+      throw new AccountAlreadyRegisteredException();
     }
+
+    var encodedDocument = Base64.getEncoder().encodeToString(newAccount.getDocument().getBytes());
+
+    var account = repository.save(new AccountEntity(encodedDocument, newAccount.getFullName()));
+    return account.getId();
+  }
 }

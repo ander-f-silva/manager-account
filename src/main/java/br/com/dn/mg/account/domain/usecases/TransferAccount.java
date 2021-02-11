@@ -17,7 +17,8 @@ public class TransferAccount implements TransferringAccount {
   private final AccountRepository accountRepository;
   private final TransactionRepository transactionRepository;
 
-  public TransferAccount(AccountRepository accountRepository, TransactionRepository transactionRepository) {
+  public TransferAccount(
+      AccountRepository accountRepository, TransactionRepository transactionRepository) {
     this.accountRepository = accountRepository;
     this.transactionRepository = transactionRepository;
   }
@@ -30,7 +31,10 @@ public class TransferAccount implements TransferringAccount {
   }
 
   private void depositAccount(TransferAccountDTO transferAccount) {
-    var fromAccount = accountRepository.findById(transferAccount.getAccountFrom()).orElseThrow(() -> new AccountNotFoundException());
+    var fromAccount =
+        accountRepository
+            .findById(transferAccount.getAccountFrom())
+            .orElseThrow(() -> new AccountNotFoundException());
 
     var account = new Account(fromAccount.getAmount());
     var total = account.deposit(transferAccount.getValue());
@@ -42,7 +46,8 @@ public class TransferAccount implements TransferringAccount {
   }
 
   private void withdrawAccount(UUID toAccountId, TransferAccountDTO transferAccount) {
-    var toAccount = accountRepository.findById(toAccountId).orElseThrow(() -> new AccountNotFoundException());
+    var toAccount =
+        accountRepository.findById(toAccountId).orElseThrow(() -> new AccountNotFoundException());
 
     var account = new Account(toAccount.getAmount());
     var total = account.withdraw(transferAccount.getValue());

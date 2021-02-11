@@ -10,12 +10,10 @@ import javax.inject.Inject;
 @MicronautTest
 class ManagerAccountTest {
 
-    @Inject
-    EmbeddedApplication<?> application;
+  @Inject EmbeddedApplication<?> application;
 
-    @Test
-    void testItWorks() {
-        Assertions.assertTrue(application.isRunning());
-    }
-
+  @Test
+  void testItWorks() {
+    Assertions.assertTrue(application.isRunning());
+  }
 }

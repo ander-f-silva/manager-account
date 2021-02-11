@@ -13,29 +13,33 @@ import java.util.UUID;
 
 @Singleton
 class DepositAccount implements DepositingAccount {
-    private final AccountRepository accountRepository;
-    private final TransactionRepository transactionRepository;
+  private final AccountRepository accountRepository;
+  private final TransactionRepository transactionRepository;
 
-    public DepositAccount(AccountRepository accountRepository, TransactionRepository transactionRepository) {
-        this.accountRepository = accountRepository;
-        this.transactionRepository = transactionRepository;
-    }
+  public DepositAccount(
+      AccountRepository accountRepository, TransactionRepository transactionRepository) {
+    this.accountRepository = accountRepository;
+    this.transactionRepository = transactionRepository;
+  }
 
-    @Transactional
-    @Override
-    public void effect(UUID id, DepositAccountDTO depositAccount) {
-        var accountDeposited = accountRepository.findById(id).orElseThrow(() -> new AccountNotFoundException());
+  @Transactional
+  @Override
+  public void effect(UUID id, DepositAccountDTO depositAccount) {
+    var accountDeposited =
+        accountRepository.findById(id).orElseThrow(() -> new AccountNotFoundException());
 
-        var document = accountDeposited.getDocument();
-        var fullName = accountDeposited.getFullName();
-        var amount = accountDeposited.getAmount();
+    var document = accountDeposited.getDocument();
+    var fullName = accountDeposited.getFullName();
+    var amount = accountDeposited.getAmount();
 
-        var account =  new Account(document, fullName, amount);
-        var total = account.deposit(depositAccount.getValue());
+    var account = new Account(document, fullName, amount);
+    var total = account.deposit(depositAccount.getValue());
 
-        transactionRepository.save(new TransactionEntity(accountDeposited, TransactionType.DEPOSIT, depositAccount.getValue()));
+    transactionRepository.save(
+        new TransactionEntity(
+            accountDeposited, TransactionType.DEPOSIT, depositAccount.getValue()));
 
-        accountDeposited.setAmount(total);
-        accountRepository.save(accountDeposited);
-    }
+    accountDeposited.setAmount(total);
+    accountRepository.save(accountDeposited);
+  }
 }
