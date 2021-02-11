@@ -9,13 +9,17 @@ import io.micronaut.http.annotation.Produces;
 import io.micronaut.http.server.exceptions.ExceptionHandler;
 
 import javax.inject.Singleton;
+import java.util.HashMap;
 
 @Produces
 @Singleton
 @Requires(classes = {AccountAlreadyRegisteredException.class, ExceptionHandler.class})
-public class AccountAlreadyRegisteredExceptionHandler  implements ExceptionHandler<AccountAlreadyRegisteredException, HttpResponse> {
-    @Override
-    public HttpResponse handle(HttpRequest request, AccountAlreadyRegisteredException exception) {
-        return HttpResponse.status(HttpStatus.CONFLICT);
-    }
+public class AccountAlreadyRegisteredExceptionHandler
+    implements ExceptionHandler<AccountAlreadyRegisteredException, HttpResponse> {
+  @Override
+  public HttpResponse handle(HttpRequest request, AccountAlreadyRegisteredException exception) {
+   var message = new HashMap<String, String>();
+   message.put("error", exception.getMessage());
+    return HttpResponse.status(HttpStatus.CONFLICT).body(message);
+  }
 }

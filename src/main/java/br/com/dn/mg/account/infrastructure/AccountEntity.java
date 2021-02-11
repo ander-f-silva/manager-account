@@ -11,75 +11,78 @@ import java.util.UUID;
 
 @Entity(name = "account")
 public class AccountEntity {
-    @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
-    @Type(type="org.hibernate.type.UUIDCharType")
-    private UUID id;
+  @Id
+  @GeneratedValue(generator = "UUID")
+  @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+  @Type(type = "org.hibernate.type.UUIDCharType")
+  private UUID id;
 
-    private String document ;
+  private String document;
 
-    @Column(name = "full_name")
-    private String fullName;
+  @Column(name = "full_name")
+  private String fullName;
 
-    private Double amount;
+  private Double amount;
 
-    @CreationTimestamp
-    @Column(name = "created_At")
-    private LocalDateTime createdAt;
+  @CreationTimestamp
+  @Column(name = "created_At")
+  private LocalDateTime createdAt;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "account_id")
-    private Set<TransactionEntity> transactions;
+  @OneToMany(fetch = FetchType.LAZY)
+  @JoinColumn(name = "account_id")
+  private Set<TransactionEntity> transactions;
 
-    public AccountEntity() {
-    }
+  public AccountEntity() {}
 
-    public AccountEntity(String document, String fullName) {
-        this.document = document;
-        this.fullName = fullName;
-        this.amount = 0.0;
-    }
+  public AccountEntity(String document, String fullName) {
+    this.document = document;
+    this.fullName = fullName;
+    this.amount = 0.0;
+  }
 
-    public UUID getId() {
-        return id;
-    }
+  public UUID getId() {
+    return id;
+  }
 
-    public String getDocument() {
-        return document;
-    }
+  public String getDocument() {
+    return document;
+  }
 
-    public String getFullName() {
-        return fullName;
-    }
+  public String getFullName() {
+    return fullName;
+  }
 
-    public Double getAmount() {
-        return amount;
-    }
+  public Double getAmount() {
+    return amount;
+  }
 
-    public void setAmount(Double amount) {
-        this.amount = amount;
-    }
+  public void setAmount(Double amount) {
+    this.amount = amount;
+  }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
+  public LocalDateTime getCreatedAt() {
+    return createdAt;
+  }
 
-    public Set<TransactionEntity> getTransactions() {
-        return transactions;
-    }
+  public Set<TransactionEntity> getTransactions() {
+    return transactions;
+  }
 
-    @Override
-    public String toString() {
-        return "Account{" +
-                "id=" + id +
-                ", document='" + document + '\'' +
-                ", fullName='" + fullName + '\'' +
-                ", amount=" + amount +
-                ", createdAt=" + createdAt +
-                '}';
-    }
+  @Override
+  public String toString() {
+    return "Account{"
+        + "id="
+        + id
+        + ", document='"
+        + document
+        + '\''
+        + ", fullName='"
+        + fullName
+        + '\''
+        + ", amount="
+        + amount
+        + ", createdAt="
+        + createdAt
+        + '}';
+  }
 }

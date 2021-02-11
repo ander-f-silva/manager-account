@@ -5,5 +5,5 @@ import br.com.dn.mg.account.application.payload.TransferAccountDTO;
 import java.util.UUID;
 
 public interface TransferringAccount {
-    void effect(UUID toAccountId, TransferAccountDTO transferAccount);
+  void effect(UUID toAccountId, TransferAccountDTO transferAccount);
 }
