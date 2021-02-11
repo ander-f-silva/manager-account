@@ -31,7 +31,7 @@ class GetAccount implements GettingAccount {
               byte[] decodedDocument = Base64.getDecoder().decode(accountEntity.getDocument());
               var document = new String(decodedDocument);
 
-              logger.info("[Account: {}] Research carried out successfully", id.toString());
+              logger.info("[AccountId: {}] Research carried out successfully", id.toString());
 
               return new AccountDTO(
                   document, accountEntity.getFullName(), accountEntity.getAmount());
@@ -60,7 +60,7 @@ class GetAccount implements GettingAccount {
               byte[] decodedDocument = Base64.getDecoder().decode(accountEntity.getDocument());
               var document = new String(decodedDocument);
 
-              logger.info("[Account: {}] Research carried out successfully", id.toString());
+              logger.info("[AccountId: {}] Research carried out successfully", id.toString());
 
               return new AccountDTO(document, accountEntity.getFullName(), transactions);
             })

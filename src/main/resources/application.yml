@@ -3,6 +3,15 @@ micronaut:
     name: managerAccount
   server:
     port: 9090
+    cors:
+      enabled: true
+      configurations:
+        all:
+          allowedMethods:
+            - POST
+            - PATCH
+            - OPTIONS
+            - GET
 datasources:
   default:
     url: jdbc:mysql://localhost:6612/manager-account-db
