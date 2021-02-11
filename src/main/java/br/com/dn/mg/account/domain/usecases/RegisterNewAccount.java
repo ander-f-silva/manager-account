@@ -29,14 +29,14 @@ class RegisterNewAccount implements RegisteringNewAccount {
     try {
       validator.assertValid(newAccount.getDocument());
     } catch (InvalidStateException e) {
-      throw new InvalidDocumentException();
+      throw new InvalidDocumentException("The document informed is invalid.");
     }
 
     var encodedDocument = Base64.getEncoder().encodeToString(newAccount.getDocument().getBytes());
 
     var hasRegisteredAccount = repository.existsByDocument(encodedDocument);
     if (hasRegisteredAccount) {
-      throw new AccountAlreadyRegisteredException();
+      throw new AccountAlreadyRegisteredException("The account has already been registered.");
     }
 
     var account = repository.save(new AccountEntity(encodedDocument, newAccount.getFullName()));

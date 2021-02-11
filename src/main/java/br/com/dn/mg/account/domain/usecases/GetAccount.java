@@ -30,7 +30,7 @@ class GetAccount implements GettingAccount {
               return new AccountDTO(
                   document, accountEntity.getFullName(), accountEntity.getAmount());
             })
-        .orElseThrow(AccountNotFoundException::new);
+        .orElseThrow(() -> new AccountNotFoundException("The reported account was not found."));
   }
 
   @Override
@@ -53,6 +53,6 @@ class GetAccount implements GettingAccount {
 
               return new AccountDTO(document, accountEntity.getFullName(), transactions);
             })
-        .orElseThrow(AccountNotFoundException::new);
+        .orElseThrow(() -> new AccountNotFoundException("The reported account was not found."));
   }
 }

@@ -34,7 +34,7 @@ public class TransferAccount implements TransferringAccount {
     var fromAccount =
         accountRepository
             .findById(transferAccount.getAccountFrom())
-            .orElseThrow(() -> new AccountNotFoundException());
+                .orElseThrow(() -> new AccountNotFoundException("The reported account was not found."));
 
     var account = new Account(fromAccount.getAmount());
     var total = account.deposit(transferAccount.getValue());
@@ -47,13 +47,13 @@ public class TransferAccount implements TransferringAccount {
 
   private void withdrawAccount(UUID toAccountId, TransferAccountDTO transferAccount) {
     var toAccount =
-        accountRepository.findById(toAccountId).orElseThrow(() -> new AccountNotFoundException());
+        accountRepository.findById(toAccountId).orElseThrow(() -> new AccountNotFoundException("The reported account was not found."));
 
     var account = new Account(toAccount.getAmount());
     var total = account.withdraw(transferAccount.getValue());
 
     if (total <= 0.0) {
-      throw new InsufficientBalanceException();
+      throw new InsufficientBalanceException("Insufficient balance to execute this operation.");
     }
 
     transactionRepository.save(new TransactionEntity(toAccount, TransactionType.TRANSFER, transferAccount.getValue() * -1));

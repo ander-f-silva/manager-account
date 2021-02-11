@@ -9,6 +9,7 @@ import io.micronaut.http.annotation.Produces;
 import io.micronaut.http.server.exceptions.ExceptionHandler;
 
 import javax.inject.Singleton;
+import java.util.HashMap;
 
 @Produces
 @Singleton
@@ -18,6 +19,8 @@ public class InsufficientBalanceExceptionHandler
 
   @Override
   public HttpResponse handle(HttpRequest request, InsufficientBalanceException exception) {
-    return HttpResponse.status(HttpStatus.UNPROCESSABLE_ENTITY);
+    var message = new HashMap<String, String>();
+    message.put("error", exception.getMessage());
+    return HttpResponse.status(HttpStatus.UNPROCESSABLE_ENTITY).body(message);
   }
 }

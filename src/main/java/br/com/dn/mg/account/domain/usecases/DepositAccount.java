@@ -26,7 +26,7 @@ class DepositAccount implements DepositingAccount {
   @Override
   public void effect(UUID id, DepositAccountDTO depositAccount) {
     var accountDeposited =
-        accountRepository.findById(id).orElseThrow(() -> new AccountNotFoundException());
+        accountRepository.findById(id).orElseThrow(() -> new AccountNotFoundException("The reported account was not found."));
 
     var account = new Account(accountDeposited.getAmount());
     var total = account.deposit(depositAccount.getValue());
