@@ -18,6 +18,7 @@ import org.junit.jupiter.params.aggregator.ArgumentsAccessor;
 import org.junit.jupiter.params.provider.CsvSource;
 
 import javax.inject.Inject;
+import java.util.Base64;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -73,7 +74,7 @@ class AccountsResourceTest {
     try {
       UUID accountId = UUID.randomUUID();
 
-      if (accountExist) accountId = accountRepository.findByDocument("39670899087").get().getId();
+      if (accountExist) accountId = accountRepository.findByDocument(Base64.getEncoder().encodeToString("39670899087".getBytes())).get().getId();
 
       HttpResponse<?> response =
           client
@@ -104,7 +105,7 @@ class AccountsResourceTest {
 
       AccountEntity account = new AccountEntity();
       if (accountExist) {
-        var optAccount = accountRepository.findByDocument("39670899087");
+        var optAccount = accountRepository.findByDocument(Base64.getEncoder().encodeToString("39670899087".getBytes()));
         account = optAccount.get();
         accountId = account.getId();
       }
@@ -116,9 +117,10 @@ class AccountsResourceTest {
       assertEquals(statusCode, response.getStatus().getCode());
 
       var accountResponse = response.getBody(AccountDTO.class).get();
+      String expectedDocument = new String(Base64.getDecoder().decode(account.getDocument()));
 
       assertEquals(account.getFullName(), accountResponse.getFullName());
-      assertEquals(account.getDocument(), accountResponse.getDocument());
+      assertEquals(expectedDocument, accountResponse.getDocument());
       assertEquals(account.getAmount(), accountResponse.getBalanceAmount());
 
     } catch (HttpClientResponseException httpClientResponseException) {
@@ -141,7 +143,7 @@ class AccountsResourceTest {
 
       AccountEntity account = new AccountEntity();
       if (accountExist) {
-        var optAccount = accountRepository.findByDocument("39670899087");
+        var optAccount = accountRepository.findByDocument(Base64.getEncoder().encodeToString("39670899087".getBytes()));
         account = optAccount.get();
         accountId = account.getId();
       }
@@ -153,9 +155,10 @@ class AccountsResourceTest {
       assertEquals(statusCode, response.getStatus().getCode());
 
       var accountResponse = response.getBody(AccountDTO.class).get();
+      String expectedDocument = new String(Base64.getDecoder().decode(account.getDocument()));
 
       assertEquals(account.getFullName(), accountResponse.getFullName());
-      assertEquals(account.getDocument(), accountResponse.getDocument());
+      assertEquals(expectedDocument, accountResponse.getDocument());
 
     } catch (HttpClientResponseException httpClientResponseException) {
       assertEquals(statusCode, httpClientResponseException.getStatus().getCode());
@@ -182,10 +185,10 @@ class AccountsResourceTest {
       UUID fromAccountId = UUID.randomUUID();
 
       if (toAccountExist)
-        toAccountId = accountRepository.findByDocument("39828082004").get().getId();
+        toAccountId = accountRepository.findByDocument(Base64.getEncoder().encodeToString("39828082004".getBytes())).get().getId();
 
       if (fromAccountExist)
-        fromAccountId = accountRepository.findByDocument("37692501092").get().getId();
+        fromAccountId = accountRepository.findByDocument(Base64.getEncoder().encodeToString("37692501092".getBytes())).get().getId();
 
       HttpResponse<?> response =
           client
