@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 @Singleton
 class GetAccount implements GettingAccount {
-  private AccountRepository accountRepository;
+  private final AccountRepository accountRepository;
 
   public GetAccount(AccountRepository accountRepository) {
     this.accountRepository = accountRepository;
@@ -31,7 +31,7 @@ class GetAccount implements GettingAccount {
   }
 
   @Override
-  public AccountDTO findWithTransactions(UUID id) throws AccountNotFoundException {
+  public AccountDTO findWithTransactions(UUID id) {
     return accountRepository
         .search(id)
         .map(
