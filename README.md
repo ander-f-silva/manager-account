@@ -69,7 +69,63 @@ OS name: "mac os x", version: "10.16", arch: "x86_64", family: "mac"
 
 ## Documentação da API
 
-* Depois
+Para testar as apis eu tenho duas alternativas:
+
+* Importar arquivo do postman que esta na pasta /postman/Manager_Account.postman_collection.json;
+
+* Usar o curls em um terminal.
+
+### Chamadas de API
+
+#### Criar uma conta
+
+``` shell script
+curl --location --request POST 'http://localhost:9090/accounts' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "document":"64808987023",
+    "fullName":"José Ferreira"
+}'
+```
+
+#### Lista todas as contas (Para não precisar acessar a base, não existiria para o process de negócio)
+
+``` shell script
+curl --location --request GET 'http://localhost:9090/accounts
+````
+
+#### Pesquisar uma conta informando o id
+
+``` shell script
+curl --location --request GET 'http://localhost:9090/accounts/1f977b92-540f-46e0-8ae9-1edbc8f04bad'
+```
+
+#### Fazer depósito em uma conta
+
+``` shell script
+curl --location --request PATCH 'http://localhost:9090/accounts/b9fb6ea8-d9d1-4a1b-91b2-9cef90091f90/deposit' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "value": 123.49
+}'
+```
+
+#### Fazer transferência entre duas contas
+
+``` shell script
+curl --location --request PATCH 'http://localhost:9090/accounts/b9fb6ea8-d9d1-4a1b-91b2-9cef90091f90/transfer' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "accountFrom": "1f977b92-540f-46e0-8ae9-1edbc8f04bad",
+    "value":34.90
+}'
+```
+
+#### Lista extrato da conta
+
+``` shell script
+curl --location --request GET 'http://localhost:9090/accounts/fb63977f-9f76-4370-ae9e-b6be008df7cf/transactions'
+```
 
 ## Para realizar o build e os testes do programa
 

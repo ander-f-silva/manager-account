@@ -1,0 +1,159 @@
+{
+	"info": {
+		"_postman_id": "5056777e-e392-486e-a79c-ae45fc38df08",
+		"name": "Manager_Account",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "register new account",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"document\":\"64808987023\",\n    \"fullName\":\"José Ferreira\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9090/accounts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"accounts"
+					]
+				},
+				"description": "Save a new account "
+			},
+			"response": []
+		},
+		{
+			"name": "get account",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9090/accounts/1f977b92-540f-46e0-8ae9-1edbc8f04bad",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"accounts",
+						"1f977b92-540f-46e0-8ae9-1edbc8f04bad"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deposit the value in account",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"value\": 123.49\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9090/accounts/b9fb6ea8-d9d1-4a1b-91b2-9cef90091f90/deposit",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"accounts",
+						"b9fb6ea8-d9d1-4a1b-91b2-9cef90091f90",
+						"deposit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get account with transactions",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9090/accounts/fb63977f-9f76-4370-ae9e-b6be008df7cf/transactions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"accounts",
+						"fb63977f-9f76-4370-ae9e-b6be008df7cf",
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "transfer accounts",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"accountFrom\": \"1f977b92-540f-46e0-8ae9-1edbc8f04bad\",\n    \"value\":34.90\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9090/accounts/b9fb6ea8-d9d1-4a1b-91b2-9cef90091f90/transfer",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"accounts",
+						"b9fb6ea8-d9d1-4a1b-91b2-9cef90091f90",
+						"transfer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "list accounts",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9090/accounts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"accounts"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
