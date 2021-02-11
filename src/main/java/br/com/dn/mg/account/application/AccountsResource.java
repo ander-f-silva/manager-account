@@ -2,9 +2,13 @@ package br.com.dn.mg.account.application;
 
 import br.com.dn.mg.account.application.payload.DepositAccountDTO;
 import br.com.dn.mg.account.application.payload.NewAccountDTO;
+import br.com.dn.mg.account.application.payload.TransferAccountDTO;
 import br.com.dn.mg.account.domain.usecases.DepositingAccount;
 import br.com.dn.mg.account.domain.usecases.GettingAccount;
 import br.com.dn.mg.account.domain.usecases.RegisteringNewAccount;
+import br.com.dn.mg.account.domain.usecases.TransferringAccount;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.UUIDSerializer;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.*;
@@ -19,6 +23,7 @@ class AccountsResource {
     @Inject RegisteringNewAccount registeringNewAccount;
     @Inject DepositingAccount depositingAccount;
     @Inject GettingAccount gettingAccount;
+    @Inject TransferringAccount transferringAccount;
 
     @Consumes(MediaType.APPLICATION_JSON)
     @Post
@@ -44,5 +49,12 @@ class AccountsResource {
     @Get("/{id}/transactions")
     public HttpResponse<?> getAccountWithTransactions(@PathVariable("id") UUID id) {
         return HttpResponse.ok(gettingAccount.findWithTransactions(id));
+    }
+
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Patch("/{id}/transfer")
+    public HttpResponse<?> transferValueToAccount(@JsonSerialize(contentUsing= UUIDSerializer.class)  @PathVariable("id") UUID toAccountId, @Valid @Body TransferAccountDTO transferAccount) {
+        transferringAccount.effect(toAccountId, transferAccount);
+        return HttpResponse.noContent();
     }
 }

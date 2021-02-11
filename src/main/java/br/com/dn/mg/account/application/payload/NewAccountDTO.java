@@ -26,4 +26,12 @@ public class NewAccountDTO {
     public String getFullName() {
         return fullName;
     }
+
+    @Override
+    public String toString() {
+        return "NewAccountDTO{" +
+                "document='" + document + '\'' +
+                ", fullName='" + fullName + '\'' +
+                '}';
+    }
 }

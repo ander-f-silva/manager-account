@@ -3,6 +3,7 @@ package br.com.dn.mg.account.application;
 import br.com.dn.mg.account.application.payload.AccountDTO;
 import br.com.dn.mg.account.application.payload.DepositAccountDTO;
 import br.com.dn.mg.account.application.payload.NewAccountDTO;
+import br.com.dn.mg.account.application.payload.TransferAccountDTO;
 import br.com.dn.mg.account.infrastructure.AccountEntity;
 import br.com.dn.mg.account.infrastructure.AccountRepository;
 import io.micronaut.http.HttpRequest;
@@ -75,7 +76,7 @@ class AccountsResourceTest {
                 accountId = account.get().getId();
             }
 
-            HttpResponse<?> response = client.toBlocking().exchange(HttpRequest.PATCH("/accounts/" + accountId.toString() + "/deposit",  new DepositAccountDTO(amount)), NewAccountDTO.class);
+            HttpResponse<?> response = client.toBlocking().exchange(HttpRequest.PATCH("/accounts/" + accountId.toString() + "/deposit",  new DepositAccountDTO(amount)), DepositAccountDTO.class);
             assertEquals(statusCode, response.getStatus().getCode());
         } catch (HttpClientResponseException httpClientResponseException) {
             assertEquals(statusCode, httpClientResponseException.getStatus().getCode());
@@ -144,6 +145,45 @@ class AccountsResourceTest {
             assertEquals(account.getFullName(), accountResponse.getFullName());
             assertEquals(account.getDocument(), accountResponse.getDocument());
 
+        } catch (HttpClientResponseException httpClientResponseException) {
+            assertEquals(statusCode, httpClientResponseException.getStatus().getCode());
+        }
+    }
+
+    @DisplayName("should perform transfer entry account. cases: ")
+    @ParameterizedTest(name = "{0}")
+    @CsvSource({
+            "return the transfer perform with success, true, 2000, 200",
+           //"return error to account of origen not found, true, 404",
+           // "return error to account of destination not found, true, 404",
+          //  "return to account of origin without balance, true, 422",
+         //   "return bad request to account of destination, true, 400",
+         //   "return bad request to value not found, true, 400",
+    })
+    void testTransferEntryAccounts(ArgumentsAccessor arguments) {
+        Boolean accountExist =  Boolean.valueOf(arguments.get(1).toString());
+        Double value =  Double.valueOf(arguments.get(2).toString());
+        Integer statusCode =  Integer.valueOf(arguments.get(3).toString());
+
+        try {
+            UUID toAccountId = UUID.randomUUID();
+            AccountEntity toAccount = new AccountEntity();
+
+            UUID fromAccountId = UUID.randomUUID();
+            AccountEntity fromAccount = new AccountEntity();
+
+            if (accountExist) {
+                var  optAccount = accountRepository.findByDocument("39670899087");
+                toAccount = optAccount.get();
+                toAccountId = toAccount.getId();
+
+                optAccount = accountRepository.findByDocument("39670899087");
+                fromAccount = optAccount.get();
+                fromAccountId = fromAccount.getId();
+            }
+
+            HttpResponse<?> response = client.toBlocking().exchange(HttpRequest.PATCH("/accounts/" + toAccountId.toString() + "/transfer",  new TransferAccountDTO(fromAccountId, value)), TransferAccountDTO.class);
+            assertEquals(statusCode, response.getStatus().getCode());
         } catch (HttpClientResponseException httpClientResponseException) {
             assertEquals(statusCode, httpClientResponseException.getStatus().getCode());
         }
