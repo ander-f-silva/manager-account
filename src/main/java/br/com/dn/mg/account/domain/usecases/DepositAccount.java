@@ -14,7 +14,6 @@ import java.util.UUID;
 @Singleton
 class DepositAccount implements DepositingAccount {
     private final AccountRepository accountRepository;
-
     private final TransactionRepository transactionRepository;
 
     public DepositAccount(AccountRepository accountRepository, TransactionRepository transactionRepository) {

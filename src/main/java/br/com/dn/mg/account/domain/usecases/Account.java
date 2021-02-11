@@ -20,4 +20,8 @@ class Account {
     public Double deposit(Double value ) {
        return amount + value;
     }
+
+    public Double withdraw(Double value ) {
+        return amount - value;
+    }
 }

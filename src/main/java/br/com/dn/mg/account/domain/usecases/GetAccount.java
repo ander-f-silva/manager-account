@@ -31,7 +31,7 @@ class GetAccount implements GettingAccount {
   }
 
   @Override
-  public AccountDTO findWithTransactions(UUID id) throws AccountNotFoundException {
+  public AccountDTO findWithTransactions(UUID id) {
     return accountRepository
         .search(id)
         .map(
