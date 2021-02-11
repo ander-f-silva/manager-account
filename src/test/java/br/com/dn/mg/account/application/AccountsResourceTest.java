@@ -153,33 +153,28 @@ class AccountsResourceTest {
     @DisplayName("should perform transfer entry account. cases: ")
     @ParameterizedTest(name = "{0}")
     @CsvSource({
-            "return the transfer perform with success, true, 2000, 200",
-           //"return error to account of origen not found, true, 404",
-           // "return error to account of destination not found, true, 404",
-          //  "return to account of origin without balance, true, 422",
-         //   "return bad request to account of destination, true, 400",
-         //   "return bad request to value not found, true, 400",
+            "return the transfer perform with success, true, true, 400, 204",
+            "return error to account of origen not found, false, true, 50, 404",
+            "return error to account of destination not found, true, false, 50, 404",
+            "return to account of origin without balance, true, true, 2000, 422",
     })
     void testTransferEntryAccounts(ArgumentsAccessor arguments) {
-        Boolean accountExist =  Boolean.valueOf(arguments.get(1).toString());
-        Double value =  Double.valueOf(arguments.get(2).toString());
-        Integer statusCode =  Integer.valueOf(arguments.get(3).toString());
+        Boolean toAccountExist =  Boolean.valueOf(arguments.get(1).toString());
+        Boolean fromAccountExist =  Boolean.valueOf(arguments.get(2).toString());
+
+        Double value =  Double.valueOf(arguments.get(3).toString());
+        Integer statusCode =  Integer.valueOf(arguments.get(4).toString());
 
         try {
             UUID toAccountId = UUID.randomUUID();
-            AccountEntity toAccount = new AccountEntity();
-
             UUID fromAccountId = UUID.randomUUID();
-            AccountEntity fromAccount = new AccountEntity();
 
-            if (accountExist) {
-                var  optAccount = accountRepository.findByDocument("39670899087");
-                toAccount = optAccount.get();
-                toAccountId = toAccount.getId();
+            if (toAccountExist) {
+                toAccountId = accountRepository.findByDocument("39828082004").get().getId();
+            }
 
-                optAccount = accountRepository.findByDocument("39670899087");
-                fromAccount = optAccount.get();
-                fromAccountId = fromAccount.getId();
+            if (fromAccountExist) {
+                fromAccountId = accountRepository.findByDocument("37692501092").get().getId();
             }
 
             HttpResponse<?> response = client.toBlocking().exchange(HttpRequest.PATCH("/accounts/" + toAccountId.toString() + "/transfer",  new TransferAccountDTO(fromAccountId, value)), TransferAccountDTO.class);
