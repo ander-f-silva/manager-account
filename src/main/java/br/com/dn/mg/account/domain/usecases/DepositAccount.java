@@ -21,7 +21,7 @@ class DepositAccount implements DepositingAccount {
         this.transactionRepository = transactionRepository;
     }
 
-    @Transactional(value = Transactional.TxType.REQUIRES_NEW)
+    @Transactional
     @Override
     public void effect(UUID id, DepositAccountDTO depositAccount) {
         var accountDeposited = accountRepository.findById(id).orElseThrow(() -> new AccountNotFoundException());

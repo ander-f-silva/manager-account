@@ -9,6 +9,7 @@ import br.com.dn.mg.account.infrastructure.AccountEntity;
 import br.com.dn.mg.account.infrastructure.AccountRepository;
 
 import javax.inject.Singleton;
+import javax.transaction.Transactional;
 import java.util.UUID;
 
 @Singleton
@@ -19,6 +20,7 @@ class RegisterNewAccount implements RegisteringNewAccount {
         this.repository = repository;
     }
 
+    @Transactional
     @Override
     public UUID effect(NewAccountDTO newAccount) {
         CPFValidator validator = new CPFValidator();
