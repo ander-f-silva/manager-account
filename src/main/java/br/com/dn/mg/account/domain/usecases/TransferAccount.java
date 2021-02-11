@@ -39,7 +39,7 @@ public class TransferAccount implements TransferringAccount {
     var account = new Account(fromAccount.getAmount());
     var total = account.deposit(transferAccount.getValue());
 
-    transactionRepository.save(new TransactionEntity(fromAccount, TransactionType.DEPOSIT, total));
+    transactionRepository.save(new TransactionEntity(fromAccount, TransactionType.TRANSFER, transferAccount.getValue()));
 
     fromAccount.setAmount(total);
     accountRepository.save(fromAccount);
@@ -56,7 +56,7 @@ public class TransferAccount implements TransferringAccount {
       throw new InsufficientBalanceException();
     }
 
-    transactionRepository.save(new TransactionEntity(toAccount, TransactionType.DEPOSIT, total));
+    transactionRepository.save(new TransactionEntity(toAccount, TransactionType.TRANSFER, transferAccount.getValue() * -1));
 
     toAccount.setAmount(total);
     accountRepository.save(toAccount);

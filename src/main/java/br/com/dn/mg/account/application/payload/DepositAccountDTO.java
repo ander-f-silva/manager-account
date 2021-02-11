@@ -3,10 +3,12 @@ package br.com.dn.mg.account.application.payload;
 import io.micronaut.core.annotation.Introspected;
 
 import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 @Introspected
 public class DepositAccountDTO {
+  @NotNull
   @Positive
   @DecimalMax(value = "2000.00")
   private Double value;

@@ -17,7 +17,9 @@ public class TransferAccountDTO {
   @JsonDeserialize(contentUsing = UUIDDeserializer.class)
   private UUID accountFrom;
 
-  @Positive private Double value;
+  @Positive
+  @NotNull
+  private Double value;
 
   public TransferAccountDTO() {}
 
