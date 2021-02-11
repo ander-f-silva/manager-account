@@ -28,11 +28,7 @@ class DepositAccount implements DepositingAccount {
     var accountDeposited =
         accountRepository.findById(id).orElseThrow(() -> new AccountNotFoundException());
 
-    var document = accountDeposited.getDocument();
-    var fullName = accountDeposited.getFullName();
-    var amount = accountDeposited.getAmount();
-
-    var account = new Account(document, fullName, amount);
+    var account = new Account(accountDeposited.getAmount());
     var total = account.deposit(depositAccount.getValue());
 
     transactionRepository.save(

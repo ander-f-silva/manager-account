@@ -6,6 +6,7 @@ import br.com.dn.mg.account.domain.usecases.errors.AccountNotFoundException;
 import br.com.dn.mg.account.infrastructure.AccountRepository;
 
 import javax.inject.Singleton;
+import java.util.Base64;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -22,11 +23,13 @@ class GetAccount implements GettingAccount {
     return accountRepository
         .findById(id)
         .map(
-            accountEntity ->
-                new AccountDTO(
-                    accountEntity.getDocument(),
-                    accountEntity.getFullName(),
-                    accountEntity.getAmount()))
+            accountEntity -> {
+              byte[] decodedDocument = Base64.getDecoder().decode(accountEntity.getDocument());
+              var document = new String(decodedDocument);
+
+              return new AccountDTO(
+                  document, accountEntity.getFullName(), accountEntity.getAmount());
+            })
         .orElseThrow(AccountNotFoundException::new);
   }
 
@@ -45,8 +48,10 @@ class GetAccount implements GettingAccount {
                                   transactionEntity.getValue()))
                       .collect(Collectors.toSet());
 
-              return new AccountDTO(
-                  accountEntity.getDocument(), accountEntity.getFullName(), transactions);
+              byte[] decodedDocument = Base64.getDecoder().decode(accountEntity.getDocument());
+              var document = new String(decodedDocument);
+
+              return new AccountDTO(document, accountEntity.getFullName(), transactions);
             })
         .orElseThrow(AccountNotFoundException::new);
   }
