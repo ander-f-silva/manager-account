@@ -4,6 +4,9 @@ import br.com.dn.mg.account.application.payload.TransferAccountDTO;
 import br.com.dn.mg.account.domain.usecases.errors.AccountNotFoundException;
 import br.com.dn.mg.account.domain.usecases.errors.InsufficientBalanceException;
 import br.com.dn.mg.account.infrastructure.AccountRepository;
+import br.com.dn.mg.account.infrastructure.TransactionEntity;
+import br.com.dn.mg.account.infrastructure.TransactionRepository;
+import br.com.dn.mg.account.infrastructure.TransactionType;
 
 import javax.inject.Singleton;
 import javax.transaction.Transactional;
@@ -12,9 +15,11 @@ import java.util.UUID;
 @Singleton
 public class TransferAccount implements TransferringAccount {
   private final AccountRepository accountRepository;
+  private final TransactionRepository transactionRepository;
 
-  public TransferAccount(AccountRepository accountRepository) {
+  public TransferAccount(AccountRepository accountRepository, TransactionRepository transactionRepository) {
     this.accountRepository = accountRepository;
+    this.transactionRepository = transactionRepository;
   }
 
   @Transactional
@@ -25,28 +30,30 @@ public class TransferAccount implements TransferringAccount {
   }
 
   private void depositAccount(TransferAccountDTO transferAccount) {
-    var fromAccountEntity = accountRepository.findById(transferAccount.getAccountFrom()).orElseThrow(() -> new AccountNotFoundException());
+    var fromAccount = accountRepository.findById(transferAccount.getAccountFrom()).orElseThrow(() -> new AccountNotFoundException());
 
-    var account = new Account(fromAccountEntity.getAmount());
+    var account = new Account(fromAccount.getAmount());
     var total = account.deposit(transferAccount.getValue());
 
-    fromAccountEntity.setAmount(total);
-    accountRepository.save(fromAccountEntity);
+    transactionRepository.save(new TransactionEntity(fromAccount, TransactionType.DEPOSIT, total));
+
+    fromAccount.setAmount(total);
+    accountRepository.save(fromAccount);
   }
 
   private void withdrawAccount(UUID toAccountId, TransferAccountDTO transferAccount) {
-    var toAccountEntity = accountRepository.findById(toAccountId).orElseThrow(() -> new AccountNotFoundException());
+    var toAccount = accountRepository.findById(toAccountId).orElseThrow(() -> new AccountNotFoundException());
 
-    var account = new Account(toAccountEntity.getAmount());
+    var account = new Account(toAccount.getAmount());
     var total = account.withdraw(transferAccount.getValue());
 
     if (total <= 0.0) {
       throw new InsufficientBalanceException();
     }
 
-    toAccountEntity.setAmount(total);
-    accountRepository.save(toAccountEntity);
+    transactionRepository.save(new TransactionEntity(toAccount, TransactionType.DEPOSIT, total));
+
+    toAccount.setAmount(total);
+    accountRepository.save(toAccount);
   }
-
-
 }

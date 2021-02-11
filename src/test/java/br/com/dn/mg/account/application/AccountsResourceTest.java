@@ -71,10 +71,8 @@ class AccountsResourceTest {
         try {
             UUID accountId = UUID.randomUUID();
 
-            if (accountExist) {
-                var account = accountRepository.findByDocument("39670899087");
-                accountId = account.get().getId();
-            }
+            if (accountExist)
+                accountId = accountRepository.findByDocument("39670899087").get().getId();
 
             HttpResponse<?> response = client.toBlocking().exchange(HttpRequest.PATCH("/accounts/" + accountId.toString() + "/deposit",  new DepositAccountDTO(amount)), DepositAccountDTO.class);
             assertEquals(statusCode, response.getStatus().getCode());
@@ -169,13 +167,11 @@ class AccountsResourceTest {
             UUID toAccountId = UUID.randomUUID();
             UUID fromAccountId = UUID.randomUUID();
 
-            if (toAccountExist) {
+            if (toAccountExist)
                 toAccountId = accountRepository.findByDocument("39828082004").get().getId();
-            }
 
-            if (fromAccountExist) {
+            if (fromAccountExist)
                 fromAccountId = accountRepository.findByDocument("37692501092").get().getId();
-            }
 
             HttpResponse<?> response = client.toBlocking().exchange(HttpRequest.PATCH("/accounts/" + toAccountId.toString() + "/transfer",  new TransferAccountDTO(fromAccountId, value)), TransferAccountDTO.class);
             assertEquals(statusCode, response.getStatus().getCode());
