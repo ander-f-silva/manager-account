@@ -2,20 +2,18 @@ version: '3.7'
 
 services:
   db-service:
-    image: "mysql:8.0"
+    image: "mysql:5.7"
     restart: always
     container_name: manager-account-db
     environment:
-      MYSQL_DATABASE: manager-account-db
+      MYSQL_DATABASE: manager-account
       MYSQL_USER: manager-account
       MYSQL_PASSWORD: manager-account
       MYSQL_ROOT_PASSWORD: manager-account
     ports:
-      - "6612:3306"
+      - "3306:3306"
     networks:
       - local-network
-    depends_on:
-      - db-service
 
   app-service:
     build:
@@ -27,7 +25,7 @@ services:
     environment:
       DB_USERNAME: manager-account
       DB_PASSWORD: manager-account
-      DB_ENDPOINT: jdbc:mysql://db-service:6612/manager-account?useSSL=false
+      DB_ENDPOINT: jdbc:mysql://db-service:3306/manager-account
     ports:
       - "9090:9090"
     networks:
