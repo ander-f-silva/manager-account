@@ -14,10 +14,10 @@ micronaut:
             - GET
 datasources:
   default:
-    url: jdbc:mysql://localhost:6612/manager-account-db
+    url: ${DB_ENDPOINT}
     driverClassName: com.mysql.cj.jdbc.Driver
-    username: ${MYSQL_USER}
-    password: ${MYSQL_PASSWORD}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     schema-generate: CREATE_DROP
     dialect: MYSQL
 jpa:
