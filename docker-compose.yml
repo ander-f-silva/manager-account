@@ -1,4 +1,5 @@
 version: '3.7'
+
 services:
   db-service:
     image: "mysql:8.0"
@@ -10,4 +11,30 @@ services:
       MYSQL_PASSWORD: manager-account
       MYSQL_ROOT_PASSWORD: manager-account
     ports:
-      - "3306:3306"
+      - "6612:3306"
+    networks:
+      - local-network
+    depends_on:
+      - db-service
+
+  app-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image:
+      manager-account:latest
+    container_name: manager-account-app
+    environment:
+      DB_USERNAME: manager-account
+      DB_PASSWORD: manager-account
+      DB_ENDPOINT: jdbc:mysql://db-service:6612/manager-account?useSSL=false
+    ports:
+      - "9090:9090"
+    networks:
+      - local-network
+    depends_on:
+      - db-service
+
+networks:
+  local-network:
+    driver: bridge

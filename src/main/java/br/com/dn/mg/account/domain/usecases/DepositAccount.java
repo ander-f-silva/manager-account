@@ -6,6 +6,8 @@ import br.com.dn.mg.account.infrastructure.AccountRepository;
 import br.com.dn.mg.account.infrastructure.TransactionEntity;
 import br.com.dn.mg.account.infrastructure.TransactionRepository;
 import br.com.dn.mg.account.infrastructure.TransactionType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Singleton;
 import javax.transaction.Transactional;
@@ -13,36 +15,37 @@ import java.util.UUID;
 
 @Singleton
 class DepositAccount implements DepositingAccount {
-    private AccountRepository accountRepository;
+  private final Logger logger = LoggerFactory.getLogger(DepositAccount.class);
 
-    private TransactionRepository transactionRepository;
+  private final AccountRepository accountRepository;
+  private final TransactionRepository transactionRepository;
 
-    public DepositAccount(AccountRepository accountRepository, TransactionRepository transactionRepository) {
-        this.accountRepository = accountRepository;
-        this.transactionRepository = transactionRepository;
-    }
+  public DepositAccount(
+      AccountRepository accountRepository, TransactionRepository transactionRepository) {
+    this.accountRepository = accountRepository;
+    this.transactionRepository = transactionRepository;
+  }
 
-    @Transactional(value = Transactional.TxType.REQUIRES_NEW)
-    @Override
-    public void effect(UUID id, DepositAccountDTO depositAccount) {
-        var optAccountDeposited = accountRepository.findById(id);
+  @Transactional
+  @Override
+  public void effect(UUID id, DepositAccountDTO depositAccount) {
+    var accountDeposited =
+        accountRepository.findById(id).orElseThrow(() -> {
+          logger.error("[AccountId: {}] Not found", id.toString());
+          return new AccountNotFoundException("The reported account was not found.");
+        });
 
-        if (!optAccountDeposited.isPresent()) {
-            throw new AccountNotFoundException();
-        }
+    var account = new Account(accountDeposited.getAmount());
+    var total = account.deposit(depositAccount.getValue());
 
-        var accountDeposited = optAccountDeposited.get();
+    transactionRepository.save(
+        new TransactionEntity(
+            accountDeposited, TransactionType.DEPOSIT, depositAccount.getValue()));
 
-        var document = accountDeposited.getDocument();
-        var fullName = accountDeposited.getFullName();
-        var amount = accountDeposited.getAmount();
+    accountDeposited.setAmount(total);
+    accountRepository.save(accountDeposited);
 
-        var account =  new Account(document, fullName, amount);
-        var total = account.sumAmount(depositAccount.getValue());
+    logger.info("[AccountId: {}] Deposit successfully completed", id.toString());
 
-        transactionRepository.save(new TransactionEntity(accountDeposited, TransactionType.DEPOSIT, depositAccount.getValue()));
-
-        accountDeposited.setAmount(total);
-        accountRepository.save(accountDeposited);
-    }
+  }
 }

@@ -1,6 +1,6 @@
 package br.com.dn.mg.account.application.handlers;
 
-import br.com.dn.mg.account.domain.usecases.errors.AccountNotFoundException;
+import br.com.dn.mg.account.domain.usecases.errors.InsufficientBalanceException;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
@@ -13,13 +13,14 @@ import java.util.HashMap;
 
 @Produces
 @Singleton
-@Requires(classes = {AccountNotFoundException.class, ExceptionHandler.class})
-public class AccountNotFoundExceptionHandler
-    implements ExceptionHandler<AccountNotFoundException, HttpResponse> {
+@Requires(classes = {InsufficientBalanceException.class, ExceptionHandler.class})
+public class InsufficientBalanceExceptionHandler
+    implements ExceptionHandler<InsufficientBalanceException, HttpResponse> {
+
   @Override
-  public HttpResponse handle(HttpRequest request, AccountNotFoundException exception) {
+  public HttpResponse handle(HttpRequest request, InsufficientBalanceException exception) {
     var message = new HashMap<String, String>();
     message.put("error", exception.getMessage());
-    return HttpResponse.notFound(message);
+    return HttpResponse.status(HttpStatus.UNPROCESSABLE_ENTITY).body(message);
   }
 }

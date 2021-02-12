@@ -9,14 +9,18 @@ import io.micronaut.http.annotation.Produces;
 import io.micronaut.http.server.exceptions.ExceptionHandler;
 
 import javax.inject.Singleton;
+import java.util.HashMap;
 
 @Produces
 @Singleton
 @Requires(classes = {InvalidDocumentException.class, ExceptionHandler.class})
-public class InvalidDocumentExceptionHandler implements ExceptionHandler<InvalidDocumentException, HttpResponse> {
+public class InvalidDocumentExceptionHandler
+    implements ExceptionHandler<InvalidDocumentException, HttpResponse> {
 
-    @Override
-    public HttpResponse handle(HttpRequest request, InvalidDocumentException exception) {
-        return HttpResponse.status(HttpStatus.UNPROCESSABLE_ENTITY);
-    }
+  @Override
+  public HttpResponse handle(HttpRequest request, InvalidDocumentException exception) {
+    var message = new HashMap<String, String>();
+    message.put("error", exception.getMessage());
+    return HttpResponse.status(HttpStatus.UNPROCESSABLE_ENTITY).body(message);
+  }
 }
