@@ -3,10 +3,7 @@ package br.com.dn.mg.account.application;
 import br.com.dn.mg.account.application.payload.DepositAccountDTO;
 import br.com.dn.mg.account.application.payload.NewAccountDTO;
 import br.com.dn.mg.account.application.payload.TransferAccountDTO;
-import br.com.dn.mg.account.domain.usecases.DepositingAccount;
-import br.com.dn.mg.account.domain.usecases.GettingAccount;
-import br.com.dn.mg.account.domain.usecases.RegisteringNewAccount;
-import br.com.dn.mg.account.domain.usecases.TransferringAccount;
+import br.com.dn.mg.account.domain.usecases.*;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.UUIDSerializer;
 import io.micronaut.http.HttpResponse;
@@ -24,6 +21,7 @@ class AccountsResource {
   @Inject DepositingAccount depositingAccount;
   @Inject GettingAccount gettingAccount;
   @Inject TransferringAccount transferringAccount;
+  @Inject ListingAccount listingAccount;
 
   @Consumes(MediaType.APPLICATION_JSON)
   @Post
@@ -59,5 +57,11 @@ class AccountsResource {
       @Valid @Body TransferAccountDTO transferAccount) {
     transferringAccount.effect(toAccountId, transferAccount);
     return HttpResponse.noContent();
+  }
+
+  @Produces(MediaType.APPLICATION_JSON)
+  @Get
+  public HttpResponse<?> list() {
+    return HttpResponse.ok(listingAccount.findAll());
   }
 }

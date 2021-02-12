@@ -200,4 +200,8 @@ Comecei a aplicação pensando em TDD para me ajudar a construir e validar algun
 
 Pode acessar a página de PR para histórico da construção. Página: ``https://github.com/ander-f-silva/manager-account/pulls?q=is%3Apr+is%3Aclosed`` 
 
-Pode acessar o backlog dos projetos ``https://github.com/ander-f-silva/manager-account/projects/1``
+Pode acessar o quadro dos projetos ``https://github.com/ander-f-silva/manager-account/projects/1``
+
+## Próximos passos 
+
+Para os próximos passos, olhar a coluna backlog do quadro ``https://github.com/ander-f-silva/manager-account/projects/1``
